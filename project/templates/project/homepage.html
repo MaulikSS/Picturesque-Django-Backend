@@ -1,0 +1,153 @@
+{% comment %}
+{% for post in posts %}
+    <div>
+        <img src="{{ post.photo.url }}">
+    </div>
+    <h3>{{ post.caption }}</h3>
+    <h4>- {{ post.author }}</h4>
+{% endfor %}{% endcomment %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+    .navbar{
+        font-weight: lighter;
+    }
+    .container-fluid{
+        background-color: #f8f9fa !important;
+        min-height: 91vh;
+    }
+    .card-deck{
+        margin: auto;
+    }
+    .card{
+        width: 100%;
+        margin: auto;
+    }
+    .card-img-top{
+        min-height: 100%;
+        min-width: 100%;
+        max-height: 100%;
+        min-width: 100%;
+        text-align: center;
+        display: inline-block;
+    }
+    .postImage{
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+        margin: 0 auto;
+    }
+    .card-body a{
+        text-decoration: none;
+        color: #212529;
+    }
+    .likecount{
+        margin-right: 2px;
+    }
+    .caption{
+        padding-right: 30px;
+    }
+    </style>
+    <title>Instagram Lookalike</title>
+    <link rel="shortcut icon" href="../../static/project/img/InstagramLogo.png" type="image/png">
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'project:homepage' %}">
+            <img src="../../static/project/img/InstagramLogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            &nbsp;Instagram
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'project:homepage' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project:profile' request.user.username %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project:uploadPost' %}">Upload</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'project:logout' %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width: 100%">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class = "row">
+            <div class = "offset-xs-2 col-xs-8 offset-md-4 col-md-4">
+                {% for post in posts %}
+                <br/>
+                <div class="card-deck">
+                    <div class="card">
+                        <a href="{% url 'project:detail' post.id %}">
+                            <div class="card-img-top">
+                                <img class="postImage" src="{{ post.photo.url }}" alt="Card image cap">
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <img class="like {% if request.user in post.likes.all %}liked{% endif %}" id="{{ post.id }}" src="../../static/project/img/{% if not request.user in post.likes.all %}InstagramLike.png{% else %}Liked.png{% endif %}" height="30px" width="30px" style="float: right">
+                            <p class="text-muted likecount" style="float: right; margin-top: 2px;">{{ post.likes.count }}</p>
+                            <a href="{% url 'project:profile' post.author.username %}"><p class="card-text" style="font-weight: bold">{{ post.author.username }}</p></a>
+                            <span class="caption text-muted">{{ post.caption }}</span>
+                            <p class="card-text"><small class="text-muted">{{ post.time|date:"M d, Y" }}</small></p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% comment %}<div class="card-deck">
+                    <div class="card">
+                        <a href="./Details.html">
+                            <div class="card-img-top">
+                                <img class="postImage" src="InstagramLike.png" alt="Card image cap">
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <img class="like" id="1234" src="InstagramLike.png" height="30px" width="30px" style="float: right">
+                            <p class="text-muted likecount" style="float: right; margin-top: 2px;">191</p>
+                            <a href=""><p class="card-text" style="font-weight: bold">Parth Shah</p></a>
+                            <p class="card-text"><small class="text-muted">12:38 p.m.</small></p>
+                        </div>
+                    </div>
+                </div>{% endcomment %}
+            </div>
+        </div>
+    </div>
+    <script>
+    $(document).ready(function(){
+        $('.like').click(function(e){
+            var id = $(this).attr('id');
+            var url = "../post/"+id+"/like/";
+            $.getJSON(url, function() {
+
+            });
+            if ($(this).hasClass('liked')) {
+                        $(this).attr('src', '../../static/project/img/InstagramLike.png').removeClass('liked');
+                        $(this).siblings('.likecount').text((parseInt($(this).siblings('.likecount').text()) - 1));
+                        console.log($(this).siblings('.likecount').textContent);
+                 }
+                else {
+                    $(this).attr('src', '../../static/project/img/Liked.png').addClass('liked');
+                    $(this).siblings('.likecount').text((parseInt($(this).siblings('.likecount').text()) + 1));
+                }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% comment %}
+
+<form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include 'project/form-template.html' %}
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-6">
+            <button type="submit" class="btn btn-success">Log In</button>
+        </div>
+    </div>
+</form>{% endcomment %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+    .navbar{
+        font-weight: lighter;
+    }
+    .container-fluid{
+        background-color: #f8f9fa !important;
+        height: 91vh;
+    }
+    </style>
+    <title>Instagram Lookalike</title>
+    <link rel="shortcut icon" href="../../../static/project/img/InstagramLogo.png" type="image/png">
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'project:homepage' %}">
+            <img src="../../../static/project/img/InstagramLogo.png" width="30" height="30" class="d-inline-block align-top">
+            &nbsp;Instagram
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project:homepage' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project:profile' request.user.username %}">Profile</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'project:uploadPost' %}">Upload<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'project:logout' %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width: 100%">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class = "row">
+            <div class = "offset-xs-2 col-xs-8 offset-md-4 col-md-4">
+                <br/>
+                <form method="post" action="{% url 'project:uploadPost' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="Id_Caption">Caption</label>
+                        <input type="text" class="form-control" id="id_caption" name="caption" placeholder="Caption">
+                    </div>
+                    <div class="form-group">
+                        <label for="Id_Photo">Upload Photo</label>
+                        <input type="file" class="form-control-file" required id="id_photo" name="photo">
+                    </div>
+                    <div class="form-group previewImage" style="display: none; text-align: center">
+                        <span style="font-size: 1.2rem;">Preview</span>
+                        <br/>
+                        <img id="preview" style="max-width: 100%; max-height: 100%"/>
+                    </div>
+                    <button type="submit" class="btn btn-outline-success loginButton" style="width: 100%">&nbsp;&nbsp;Upload&nbsp;&nbsp;</button>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+    <script>
+    function readURL(input) {
+        if(input.files && input.files[0]){
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#id_photo").change(function(){
+        $(this).parent().siblings('.previewImage').show();
+        readURL(this);
+    });
+    </script>
+</body>
+</html>

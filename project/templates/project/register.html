@@ -1,0 +1,102 @@
+{% comment %}
+<form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include 'project/form-template.html' %}
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-6">
+            <button type="submit" class="btn btn-success">Register</button>
+        </div>
+    </div>
+</form>{% endcomment %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+    .navbar{
+        font-weight: lighter;
+    }
+    .container-fluid{
+        background-color: #f8f9fa !important;
+        height: 91vh;
+    }
+    .error{
+        display: none;
+        color: red !important;
+    }
+    </style>
+    <title>Instagram Lookalike</title>
+    <link rel="shortcut icon" href="../../static/project/img/InstagramLogo.png" type="image/png">
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'project:homepage' %}">
+            <img src="../../static/project/img/InstagramLogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            &nbsp;Instagram
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                {% if not request.user.id == None %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'project:homepage' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'project:uploadPost' %}">Upload</a>
+                </li>
+                {% endif %}
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'project:login' %}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width: 100%">Login</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class = "row">
+            <div class = "offset-xs-2 col-xs-8 offset-md-4 col-md-4">
+                <br/>
+                <form id="registerForm" method="post" action="{% url 'project:register' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="Id_First_Name">First Name</label>
+                        <input type="text" class="form-control" id="id_first_name" name="first_name" aria-describedby="firstname" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="Id_Last_Name">Last Name</label>
+                        <input type="text" class="form-control" id="id_last_name" name="last_name" aria-describedby="lastname" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="Id_Username">Username</label>
+                        <small class="text-muted error usernameError">&nbsp;{{ form.username.errors }}</small>
+                        <input type="text" class="form-control" id="id_username" name="username" aria-describedby="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="Id_Email">Email address</label>
+                        <small class="text-muted error emailError">&nbsp;{{ form.password.errors }}</small>
+                        <input type="email" class="form-control" id="id_email" name="email" aria-describedby="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="Id_Password">Password</label>
+                        <small class="text-muted error passwordError">&nbsp;{{ form.password.errors }}</small>
+                        <input type="password" class="form-control" id="id_password" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-success loginButton">&nbsp;&nbsp;Register&nbsp;&nbsp;</button>
+                    <br/><br/>
+                    <small id="emailHelp" class="form-text text-muted" style="padding-bottom: 5px;">Already registered?</small>
+                    <!--<button type="submit" class="btn btn-primary loginButton">Login</button>-->
+                    <a class="btn btn-primary" href="{% url 'project:login' %}">&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
